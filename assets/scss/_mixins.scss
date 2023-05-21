@@ -1,5 +1,10 @@
 @mixin vp--1366 {
-  @media (max-width: 1366) {
+  @media (max-width: 1366px) {
+    @content;
+  }
+}
+@mixin vp--1367 {
+  @media (min-width: 1367px) {
     @content;
   }
 }
