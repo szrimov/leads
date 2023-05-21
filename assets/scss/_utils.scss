@@ -38,4 +38,10 @@
   @include vp--1366 {
     padding: 0 65px;
   }
+  @include vp--1367 {
+    margin: 0 auto;
+    padding: 0 65px;
+    max-width: 1366px;
+    width: 100%;
+  }
 }
