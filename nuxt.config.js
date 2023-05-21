@@ -98,6 +98,7 @@ export default {
     transpile: ['defu']
   },
   alias: {
-    '@components': resolve(__dirname, './components')
+    '@components': resolve(__dirname, './components'),
+    '@utils': resolve(__dirname, './utils.js')
   }
 }
