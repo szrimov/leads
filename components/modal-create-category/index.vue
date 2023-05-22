@@ -9,7 +9,9 @@
     template(#actions)
       commonButton(type="primary icon")
         | Сохранить
-      commonButton(type="neutral")
+      commonButton(
+        type="neutral"
+        @click="closeModal")
         | Отмена
 </template>
 
@@ -44,6 +46,11 @@ export default {
           id: 3
         }
       ]
+    }
+  },
+  methods: {
+    closeModal() {
+      this.$store.dispatch('closeModal', 'modal-create-category')
     }
   }
 }
