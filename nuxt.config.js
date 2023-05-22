@@ -32,7 +32,19 @@ export default {
    ** Customize the progress-bar color
    */
   loading: {color: '#fff'},
+  /*
+   ** Customize the generated output folder
+   */
+  generate: {
+    dir: 'public'
+  },
 
+  /*
+   ** Customize the base url
+   */
+  router: {
+    base: '/leads/' // project name
+  },
   /*
    ** Resources for components
    */
@@ -85,9 +97,6 @@ export default {
       Account: process.env.NUXT_ENV_API_ACCOUNT
     }
   },
-
-  router: {},
-
   /*
    ** Build configuration
    */
