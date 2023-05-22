@@ -3,7 +3,8 @@
     ul.submenu-component(v-show="isVisible")
       li.submenu__item(
         v-for="(item, index) in data"
-        :key="index") {{ item.title }}
+        :key="index"
+        @click="$emit(item.alias)") {{ item.title }}
 </template>
 
 <script>

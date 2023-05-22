@@ -1,6 +1,8 @@
 <template lang="pug">
   header.wrapper.header-component
-    commonButton(type="primary icon")
+    commonButton(
+      type="primary icon"
+      @click="openModal('modal-create-category')")
       | Создать категорию
       iconPlus
     commonInput.header__search-input(

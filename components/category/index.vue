@@ -13,13 +13,16 @@
       .category__submenu
         vSubmenu(
           :isVisible="isSubmenuVisible"
-          :data="submenu")
+          :data="submenu"
+          @edit="openModal('modal-edit-category')"
+          @delete="openModal('modal-delete-category')")
     commonDropdown(:isVisible="isVisible")
       .category__cards
         articleCard(
           v-for="item in data.articles"
           :key="item.id"
-          :data="item")
+          :data="item"
+          @edit="openModal('modal-edit-article')")
 </template>
 
 <script>
@@ -50,7 +53,10 @@ export default {
     return {
       isVisible: true,
       isSubmenuVisible: false,
-      submenu: [{ title: 'Редактировать' }, { title: 'Удалить' }]
+      submenu: [
+        { title: 'Редактировать', alias: 'edit' },
+        { title: 'Удалить', alias: 'delete' }
+      ]
     }
   },
   computed: {

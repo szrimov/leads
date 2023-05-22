@@ -2,7 +2,8 @@
   .category-button-component
     commonButton(
       type="primary icon"
-      size="small")
+      size="small"
+      @click="$emit('delete')")
       iconTrash
     .category-button__title {{ data }}
 </template>
@@ -37,6 +38,7 @@ export default {
   align-items: center;
   gap: 12px;
   .category-button__title {
+    white-space: nowrap;
     font-size: 16px;
     line-height: 24px;
     color: $color-neutral-primary-text;
