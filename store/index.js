@@ -1,7 +1,10 @@
+import category from './modules/category'
+
 export default {
-  modules: {},
+  modules: {category},
   state: () => ({
-    modals: []
+    modals: [],
+    isLoading: false
   }),
   actions: {
     openModal({commit}, id) {
@@ -23,6 +26,9 @@ export default {
     },
     CLEAR_MODALS(state) {
       state.modals = []
+    },
+    SET_LOADING(state, value) {
+      state.isLoading = value
     }
   },
   getters: {}

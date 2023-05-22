@@ -93,8 +93,7 @@ export default {
     baseURL: process.env.NUXT_ENV_API_URL,
     headers: {
       'Cache-Control': 'no-cache',
-      Locale: 'ru',
-      Account: process.env.NUXT_ENV_API_ACCOUNT
+      Locale: 'ru'
     }
   },
   /*
@@ -108,6 +107,7 @@ export default {
   },
   alias: {
     '@components': resolve(__dirname, './components'),
-    '@utils': resolve(__dirname, './utils.js')
+    '@utils': resolve(__dirname, './utils.js'),
+    '@handlers': resolve(__dirname, './handlers.js')
   }
 }
