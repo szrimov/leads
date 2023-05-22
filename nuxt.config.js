@@ -3,7 +3,7 @@ import {resolve} from 'path'
 export default {
   ssr: false,
   // ssr: true,
-
+  target: 'static',
   /*
    ** Headers of the page
    */
@@ -36,7 +36,7 @@ export default {
    ** Customize the generated output folder
    */
   generate: {
-    dir: 'public'
+    dir: 'dist'
   },
 
   /*

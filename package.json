@@ -9,6 +9,7 @@
     "build": "nuxt build --modern",
     "start": "nuxt start --modern",
     "generate": "nuxt generate --modern",
+    "deploy": "push-dir --dir=dist --branch=gh-pages --cleanup",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "pre-commit": "lint-staged",
     "prepare": "husky install"
@@ -43,6 +44,7 @@
     "prettier": "^2.8.4",
     "pug": "^3.0.2",
     "pug-plain-loader": "^1.1.0",
+    "push-dir": "^0.4.1",
     "sass-loader": "^10.1.1",
     "swiper": "5.4.5",
     "v-click-outside": "^3.2.0",
