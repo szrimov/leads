@@ -4,15 +4,28 @@
       v-for="(category, index) in categories"
       :key="index"
       :data="category")
+    modalCreateCategory
+    modalEditCategory
+    modalEditArticle
+    modalDeleteCategory
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import vCategory from '@/components/category'
+import modalCreateCategory from '@/components/modal-create-category'
+import modalEditCategory from '@/components/modal-edit-category'
+import modalDeleteCategory from '@/components/modal-delete-category'
+import modalEditArticle from '@/components/modal-edit-article'
 
 export default {
   name: 'page-index',
   components: {
-    vCategory
+    vCategory,
+    modalCreateCategory,
+    modalEditCategory,
+    modalDeleteCategory,
+    modalEditArticle
   },
   data() {
     return {
@@ -172,6 +185,11 @@ export default {
         }
       ]
     }
+  },
+  computed: {
+    ...mapState({
+      modals: state => state.modals
+    })
   }
 }
 </script>

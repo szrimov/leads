@@ -14,7 +14,8 @@
         v-click-outside="toggleVisibility")
         li.search-select__item(
           v-for="item in data"
-          :key="item.id") {{ item.title }}
+          :key="item.id"
+          @click="select(item.alias)") {{ item.title }}
 </template>
 
 <script>
@@ -33,6 +34,7 @@ export default {
       default: () => []
     }
   },
+  emits: ['create'],
   data() {
     return {
       value: '',
@@ -51,6 +53,12 @@ export default {
   methods: {
     toggleVisibility() {
       this.isVisible = !this.isVisible
+    },
+    select(alias) {
+      this.isVisible = false
+      if (alias === 'create') {
+        this.$emit('create')
+      }
     }
   }
 }

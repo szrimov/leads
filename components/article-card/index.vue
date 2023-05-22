@@ -4,7 +4,7 @@
       .article-card__likes
         iconLike
         span {{ data.likesQuantity }}
-      .article-card__edit
+      .article-card__edit(@click="$emit('edit')")
         iconPen
     .article-card__banner
       img(src="@/static/article-card/banner-card.png")
