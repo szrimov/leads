@@ -14,7 +14,9 @@
     template(#actions)
       commonButton(type="primary icon")
         | Сохранить
-      commonButton(type="neutral")
+      commonButton(
+        type="neutral"
+        @click="closeModal")
         | Отмена
     .modal-edit-article__list
       categoryButton(
@@ -98,6 +100,9 @@ export default {
     }
   },
   methods: {
+    closeModal() {
+      this.$store.dispatch('closeModal', 'modal-edit-article')
+    },
     createCategory() {
       this.isCreateCategory = true
     }
