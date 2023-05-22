@@ -1,21 +1,20 @@
 <template lang="pug">
-  .search-select-component
+  .search-select-component(v-click-outside="closeList")
     commonInput.search-select__input(
       v-model="value"
       type="select"
       isSelect
-      :class="{ 'search-select__input--rotate-icon': isVisible }")
-      | Вложенные статьи
+      :class="{ 'search-select__input--rotate-icon': isVisible }"
+      @focus="isVisible = true")
+      | {{ title }}
       template(#icon)
         iconSelectArrow
     transition(name="fade")
-      ul.search-select__list(
-        v-if="isVisible"
-        v-click-outside="toggleVisibility")
+      ul.search-select__list(v-if="isVisible")
         li.search-select__item(
           v-for="item in data"
           :key="item.id"
-          @click="select(item.alias)") {{ item.title }}
+          @click="select(item.alias, item.title, item.id)") {{ item.title }}
 </template>
 
 <script>
@@ -32,33 +31,39 @@ export default {
     data: {
       type: Array,
       default: () => []
+    },
+    title: {
+      type: String,
+      default: () => ''
+    },
+    type: {
+      type: String,
+      default: () => ''
     }
   },
-  emits: ['create'],
+  emits: ['create', 'addToNestedArticles', 'setParentCategory'],
   data() {
     return {
       value: '',
       isVisible: false
     }
   },
-  watch: {
-    value() {
-      if (this.value) {
-        this.isVisible = true
-      } else {
-        this.isVisible = false
-      }
-    }
-  },
   methods: {
-    toggleVisibility() {
-      this.isVisible = !this.isVisible
-    },
-    select(alias) {
+    closeList() {
       this.isVisible = false
+    },
+    select(alias, title, id) {
+      if (this.type === 'category') {
+        this.value = title
+        this.$emit('setParentCategory', id)
+      }
+      if (this.type === 'article') {
+        this.$emit('addToNestedArticles', id)
+      }
       if (alias === 'create') {
         this.$emit('create')
       }
+      this.isVisible = false
     }
   }
 }

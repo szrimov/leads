@@ -2,55 +2,99 @@
   commonModal#modal-create-category.modal-create-category-component(
     @close="closeModal")
     template(#title) Новая категория
-    commonInput(v-model="queryInput")
-      | Вложенные статьи
-    searchSelect(:data="options")
-    searchSelect(:data="options")
+    commonInput(v-model="categoryTitle")
+      | Название
+    searchSelect(
+      type="category"
+      title="Родительская карточка (необязательно)"
+      :data="parentCategories"
+      @setParentCategory="setParentCategory")
+    searchSelect(
+      type="article"
+      title="Вложенные статьи"
+      :data="nestedArticles"
+      @addToNestedArticles="addToNestedArticles")
     template(#actions)
-      commonButton(type="primary icon")
-        | Сохранить
+      commonButton(
+        type="primary icon"
+        @click="create")
+        | Создать
       commonButton(
         type="neutral"
         @click="closeModal")
         | Отмена
+    .modal-create-category__list
+      categoryButton(
+        v-for="item in articles"
+        :key="item.id"
+        :data="item.title"
+        @delete="openModal('modal-delete-category')")
 </template>
 
 <script>
 import commonModal from '@/components/common/modal'
 import commonInput from '@/components/common/input'
-import searchSelect from '@/components/search-select'
 import commonButton from '@/components/common/button'
+import categoryButton from '@/components/category-button'
+import searchSelect from '@/components/search-select'
 
 export default {
   name: 'modal-create-category-component',
   components: {
     commonModal,
     commonInput,
-    searchSelect,
-    commonButton
+    commonButton,
+    categoryButton,
+    searchSelect
   },
+  props: {
+    parentCategories: {
+      type: Array,
+      default: () => []
+    },
+    nestedArticles: {
+      type: Array,
+      default: () => []
+    }
+  },
+  emits: ['addInParentCategory', 'addNewCategory'],
   data() {
     return {
-      queryInput: '',
-      options: [
-        {
-          title: 'Название статьи 123',
-          id: 1
-        },
-        {
-          title: 'Название статьи 1234',
-          id: 2
-        },
-        {
-          title: 'Название статьи 12345',
-          id: 3
-        }
-      ]
+      categoryTitle: '',
+      parentCategoryId: 0,
+      articles: []
     }
   },
   methods: {
     closeModal() {
       this.$store.dispatch('closeModal', 'modal-create-category')
+    },
+    addToNestedArticles(id) {
+      const item = this.nestedArticles.find(el => el.id === id)
+      this.articles.push(item)
+    },
+    setParentCategory(id) {
+      this.parentCategoryId = id
+    },
+    create() {
+      console.log(this.categoryTitle)
+      console.log(this.parentCategoryId)
+      if (this.parentCategoryId) {
+        this.$emit('addInParentCategory', {
+          id: this.parentCategoryId,
+          subcategory: {
+            id: Math.floor(Math.random() * 100),
+            title: this.categoryTitle,
+            articles: this.articles
+          }
+        })
+      } else {
+        this.$emit('addNewCategory', {
+          id: Math.floor(Math.random() * 100),
+          title: this.categoryTitle,
+          articles: this.articles
+        })
+      }
     }
   }
 }
@@ -58,5 +102,10 @@ export default {
 
 <style lang="scss" scoped>
 .modal-create-category-component {
+  .modal-create-category__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
 }
 </style>
