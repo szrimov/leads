@@ -2,16 +2,27 @@
   .page.index.wrapper
     NuxtError(v-if="$fetchState.error")
     template(v-else)
-      vCategory(
-        v-for="(category, index) in categories"
-        :key="index"
-        :data="category")
+      .category__wrapper(
+        v-for="category in categories"
+        :key="category.id")
+        vCategory(
+          :data="category"
+          @deleteCategory="deleteCategory"
+          @editCategory="editCategory")
+        .subcategory__wrapper(v-if="category.subcategories.length")
+          vCategory(
+            v-for="subcategory in category.subcategories"
+            :key="subcategory.id"
+            type="subcategory"
+            :data="subcategory"
+            @deleteCategory="deleteCategory"
+            @editCategory="editCategory")
       modalCreateCategory(
         :parentCategories="parentCategories"
         :nestedArticles="nestedArticles"
         @addInParentCategory="addInParentCategory"
         @addNewCategory="addNewCategory")
-      modalEditCategory
+      modalEditCategory(:category="editingCategory")
       modalEditArticle
       modalDeleteCategory
 </template>
@@ -38,7 +49,8 @@ export default {
   },
   data() {
     return {
-      categories: []
+      categories: [],
+      editingCategory: {}
     }
   },
   computed: {
@@ -73,20 +85,50 @@ export default {
   },
   methods: {
     ...mapActions({
-      getCategories: 'category/getCategories'
+      getCategories: 'category/getCategories',
+      addCategory: 'category/addCategory',
+      updateCategory: 'category/updateCategory'
     }),
     ...mapMutations({
       SET_LOADING: 'SET_LOADING'
     }),
-    addInParentCategory(data) {
-      this.categories.forEach(el => {
-        if (el.id === data.id) {
-          el.subcategories.push(data.subcategory)
-        }
-      })
+    async addInParentCategory(data) {
+      const category = await this.updateCategory({ id: data.id, data })
+      if (Object.entries(category).length) {
+        this.categories.forEach(el => {
+          if (el.id === data.id) {
+            el.subcategories.push(data.subcategory)
+          }
+        })
+      }
     },
-    addNewCategory(data) {
-      this.categories.push(data)
+    async addNewCategory(data) {
+      const category = await this.addCategory(data)
+      if (Object.entries(category).length) {
+        this.categories.push(category)
+      }
+    },
+    async deleteCategory(data) {
+      this.getRecursivelyCategory(this.categories, data.id)
+    },
+    editCategory(data) {
+      this.editingCategory = data
+    },
+    getRecursivelyCategory(categories, id) {
+      const findedCategory = categories.find(el => el.id === id)
+      if (findedCategory && Object.entries(findedCategory).length) {
+        this.$delete(
+          categories,
+          categories.findIndex(el => el.id === findedCategory.id)
+        )
+        return
+      }
+      categories.forEach(
+        el =>
+          new Promise(resolve => {
+            resolve(this.getRecursivelyCategory(el.subcategories, id))
+          })
+      )
     }
   },
   async fetch() {
@@ -105,5 +147,13 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 48px;
+  .category__wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .subcategory__wrapper {
+    padding-left: 16px;
+  }
 }
 </style>

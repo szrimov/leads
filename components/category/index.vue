@@ -14,8 +14,8 @@
         vSubmenu(
           :isVisible="isSubmenuVisible"
           :data="submenu"
-          @edit="openModal('modal-edit-category')"
-          @delete="openModal('modal-delete-category')")
+          @edit="editCategory"
+          @delete="deleteCategory")
     commonDropdown(:isVisible="isVisible")
       .category__cards
         articleCard(
@@ -47,8 +47,13 @@ export default {
     data: {
       type: Object,
       default: () => {}
+    },
+    type: {
+      type: String,
+      default: () => ''
     }
   },
+  emits: ['deleteCategory', 'editCategory'],
   data() {
     return {
       isVisible: true,
@@ -67,6 +72,18 @@ export default {
   methods: {
     closeSubmenu() {
       this.isSubmenuVisible = false
+    },
+    editCategory() {
+      this.$emit('editCategory', this.data)
+      this.openModal('modal-edit-category')
+    },
+    deleteCategory() {
+      this.$emit('deleteCategory', this.data)
+    }
+  },
+  mounted() {
+    if (this.type === 'subcategory') {
+      this.isVisible = false
     }
   }
 }

@@ -4,8 +4,14 @@
     template(#title) Редактирование категории
     commonInput(v-model="queryInput")
       | Вложенные статьи
-    searchSelect(:data="options")
-    searchSelect(:data="options")
+    searchSelect(
+      type="category"
+      title="Родительская карточка (необязательно)"
+      :data="options")
+    searchSelect(
+      type="article"
+      title="Вложенные статьи"
+      :data="options")
     template(#actions)
       commonButton(type="primary icon")
         | Сохранить
@@ -15,7 +21,7 @@
         | Отмена
     .modal-edit-category__list
       categoryButton(
-        v-for="item in categories"
+        v-for="item in category.articles"
         :key="item.id"
         :data="item.title"
         @delete="openModal('modal-delete-category')")
@@ -36,6 +42,12 @@ export default {
     commonButton,
     searchSelect,
     categoryButton
+  },
+  props: {
+    category: {
+      type: Object,
+      default: () => {}
+    }
   },
   data() {
     return {
@@ -78,11 +90,17 @@ export default {
       ]
     }
   },
+  watch: {
+    category() {
+      this.queryInput = (this.category && this.category.title) || ''
+    }
+  },
   methods: {
     closeModal() {
       this.$store.dispatch('closeModal', 'modal-edit-category')
     }
-  }
+  },
+  mounted() {}
 }
 </script>
 
