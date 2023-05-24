@@ -5,7 +5,9 @@
     .modal-delete__title Удалить категорию?
     .modal-delete__subtitle Все дочерние категории удалятся
     template(#actions)
-      commonButton(type="primary icon")
+      commonButton(
+        type="primary icon"
+        @click="deleteCategory")
         | Удалить
       commonButton(
         type="neutral"

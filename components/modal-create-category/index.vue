@@ -77,22 +77,22 @@ export default {
       this.parentCategoryId = id
     },
     create() {
-      console.log(this.categoryTitle)
-      console.log(this.parentCategoryId)
       if (this.parentCategoryId) {
         this.$emit('addInParentCategory', {
           id: this.parentCategoryId,
           subcategory: {
-            id: Math.floor(Math.random() * 100),
+            id: Math.floor(Math.random() * 1000),
             title: this.categoryTitle,
-            articles: this.articles
+            articles: this.articles,
+            subcategories: []
           }
         })
       } else {
         this.$emit('addNewCategory', {
-          id: Math.floor(Math.random() * 100),
+          id: Math.floor(Math.random() * 1000),
           title: this.categoryTitle,
-          articles: this.articles
+          articles: this.articles,
+          subcategories: []
         })
       }
     }
